@@ -35,9 +35,9 @@ class Course extends Courses
     }
 
     // Проверяем, курс запущен или нет
-    public function isStart($group_id)
+    public function isStart()
     {
-        $resultGet = $this->api->get('courses_start.get', ['group_id' => $group_id, 'course_id' => $this->courseId]);
+        $resultGet = $this->api->get('courses_start.get', ['group_id' => $this->groupId, 'course_id' => $this->courseId]);
         if(!empty($resultGet['result']['item']))
         {
             return $resultGet['result']['item'][0]['ID'];
@@ -47,9 +47,9 @@ class Course extends Courses
     }
 
     // Запускаем курс
-    public function startCourse($group_id): bool
+    public function startCourse(): bool
     {
-        $result = $this->api->get('courses_start.add', ['group_id' => $group_id, 'course_id' => $this->courseId]);
+        $result = $this->api->get('courses_start.add', ['group_id' => $this->groupId, 'course_id' => $this->courseId]);
         if($result)
         {
             return true;
@@ -59,9 +59,9 @@ class Course extends Courses
     }
 
     // Заканчиваем курс
-    public function endCourse($group_id): bool
+    public function endCourse(): bool
     {
-        $resultStart = $this->isStart($group_id);
+        $resultStart = $this->isStart();
         if($resultStart)
         {
             $result = $this->api->get('courses_start.delete', ['id' => $resultStart]);
@@ -117,9 +117,9 @@ class Course extends Courses
     }
 
     // Получаем время начала и конца курса
-    public function getTimeCourse($group_id)
+    public function getTimeCourse()
     {
-        $res = $this->api->get('time_course.get', ['group_id' => $group_id, 'course_id' => $this->courseId]);
+        $res = $this->api->get('time_course.get', ['group_id' => $this->groupId, 'course_id' => $this->courseId]);
         if(!empty($res['result']['item']))
         {
             return $res['result']['item'][0];
@@ -141,9 +141,9 @@ class Course extends Courses
     }
 
     // Устанавливаем время для курса
-    public function setTimeCourse($group_id, $time_start, $time_end)
+    public function setTimeCourse($time_start, $time_end)
     {
-        $res = $this->api->get('time_course.get', ['group_id' => $group_id, 'course_id' => $this->courseId]);
+        $res = $this->api->get('time_course.get', ['group_id' => $this->groupId, 'course_id' => $this->courseId]);
 
         $result = false;
 
@@ -151,7 +151,7 @@ class Course extends Courses
         {
             $result = $this->api->get('time_course.update', ['ID' => $res['result']['item'][0]['ID'], 'time_end' => $time_end, 'time_start' => $time_start]);
         } else {
-            $result = $this->api->get('time_course.add', ['group_id' => $group_id, 'course_id' => $this->courseId, 'time_end' => $time_end, 'time_start' => $time_start]);
+            $result = $this->api->get('time_course.add', ['group_id' => $this->groupId, 'course_id' => $this->courseId, 'time_end' => $time_end, 'time_start' => $time_start]);
         }
         return $result;
     }
