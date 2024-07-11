@@ -2,19 +2,12 @@
 
 abstract class Courses extends RestApi
 {
-
-    protected $modxClass;
-
-    protected $api;
-
     protected $groupId;
 
     protected $course;
 
-    public function __construct(modX $modxClass, $apiKey) {
-        $this->modxClass = $modxClass;
-
-        $this->api = new RestApi($modxClass, $apiKey);
+    public function set($api) {
+        $this->api = $api;
     }
 
     // Получаем курс по айдишнику

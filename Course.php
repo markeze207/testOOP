@@ -18,6 +18,8 @@ class Course extends Courses
         $this->courseId = $courseId;
 
         $this->api = new RestApi($modxClass, $apiKey);
+
+        self::set($this->api);
     }
 
     // Получаем курс по айдишнику
